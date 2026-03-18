@@ -2,6 +2,8 @@
 
 App **standalone** em Next.js 14 + Supabase: login, painel com resumo do mês, gráficos (Recharts) e CRUD de transações.
 
+**Monorepo Adventure Labs:** este repositório é referenciado como **git submodule** em `tools/dino` (clone com `git submodule update --init tools/dino`). Ver também `knowledge/06_CONHECIMENTO/dino-repo-e-submodulo.md` no repo adventure-labs.
+
 Especificação completa futura: [DINO_MASTER_PROMPT.md](./DINO_MASTER_PROMPT.md).
 
 ## Pré-requisitos
