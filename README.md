@@ -6,6 +6,13 @@ App **standalone** em Next.js 14 + Supabase: login, painel com resumo do mês, g
 
 Especificação completa futura: [DINO_MASTER_PROMPT.md](./DINO_MASTER_PROMPT.md).
 
+## Wiki e projeto (GitHub)
+
+| Recurso | Link / pasta |
+|---------|----------------|
+| **Wiki** (fonte em git) | Pasta [`docs/wiki/`](./docs/wiki/) — publicar na Wiki nativa: [`docs/WIKI_PUBLISH.md`](./docs/WIKI_PUBLISH.md) |
+| **Project** (board issues + PRs) | [Dino — produto & engenharia](https://github.com/users/adventurelabsbrasil/projects/7) *(repo `dino` já vinculado)* |
+
 ## Pré-requisitos
 
 - Node 20+
