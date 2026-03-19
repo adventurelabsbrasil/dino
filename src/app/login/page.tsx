@@ -21,27 +21,27 @@ export default function LoginPage() {
   const [signUpState, signUpAction] = useFormState(signUp, initial);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-muted/30 p-4 dark:bg-background">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted/30 p-4 pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] dark:bg-background">
       <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-primary">
         <span className="text-3xl" aria-hidden>
           🦕
         </span>
         Dino
       </div>
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Assistente financeiro familiar</CardTitle>
-          <CardDescription>
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-1.5 pb-4 sm:pb-6">
+          <CardTitle className="text-lg sm:text-xl">Assistente financeiro familiar</CardTitle>
+          <CardDescription className="text-sm">
             Entre ou crie uma conta para a família.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <Tabs defaultValue="login">
-            <TabsList className="grid h-auto w-full grid-cols-2 p-1">
-              <TabsTrigger className="w-full" value="login">
+            <TabsList className="grid h-12 w-full grid-cols-2 p-1">
+              <TabsTrigger className="min-h-[44px] w-full text-sm" value="login">
                 Entrar
               </TabsTrigger>
-              <TabsTrigger className="w-full" value="register">
+              <TabsTrigger className="min-h-[44px] w-full text-sm" value="register">
                 Cadastrar
               </TabsTrigger>
             </TabsList>
@@ -55,6 +55,7 @@ export default function LoginPage() {
                     type="email"
                     autoComplete="email"
                     required
+                    className="min-h-[44px] text-base"
                   />
                 </div>
                 <div className="space-y-2">
@@ -65,12 +66,13 @@ export default function LoginPage() {
                     type="password"
                     autoComplete="current-password"
                     required
+                    className="min-h-[44px] text-base"
                   />
                 </div>
                 {signInState.error ? (
                   <p className="text-sm text-destructive">{signInState.error}</p>
                 ) : null}
-                <SubmitButton className="w-full" pendingLabel="Entrando…">
+                <SubmitButton className="min-h-[44px] w-full text-base" pendingLabel="Entrando…">
                   Entrar
                 </SubmitButton>
               </form>
@@ -79,7 +81,7 @@ export default function LoginPage() {
               <form action={signUpAction} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="reg-name">Nome (opcional)</Label>
-                  <Input id="reg-name" name="name" autoComplete="name" />
+                  <Input id="reg-name" name="name" autoComplete="name" className="min-h-[44px] text-base" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="reg-email">E-mail</Label>
@@ -89,6 +91,7 @@ export default function LoginPage() {
                     type="email"
                     autoComplete="email"
                     required
+                    className="min-h-[44px] text-base"
                   />
                 </div>
                 <div className="space-y-2">
@@ -100,6 +103,7 @@ export default function LoginPage() {
                     autoComplete="new-password"
                     required
                     minLength={6}
+                    className="min-h-[44px] text-base"
                   />
                 </div>
                 {signUpState.error ? (
@@ -110,7 +114,7 @@ export default function LoginPage() {
                     {signUpState.ok}
                   </p>
                 ) : null}
-                <SubmitButton className="w-full" pendingLabel="Criando…">
+                <SubmitButton className="min-h-[44px] w-full text-base" pendingLabel="Criando…">
                   Criar conta
                 </SubmitButton>
               </form>

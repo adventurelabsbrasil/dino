@@ -179,7 +179,85 @@ export function TransactionsClient({
         </Button>
       </form>
 
-      <div className="rounded-md border">
+      {/* Mobile: lista em cards */}
+      <div className="space-y-3 md:hidden">
+        {transactions.length === 0 ? (
+          <p className="rounded-lg border border-border bg-card p-6 text-center text-muted-foreground">
+            Nenhuma transação no período.
+          </p>
+        ) : (
+          transactions.map((row) => (
+            <div
+              key={row.id}
+              className="flex flex-col gap-2 rounded-lg border border-border bg-card p-4"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium">{row.description}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {format(parseISO(row.date), "dd/MM/yyyy")}
+                    {row.account_id ? ` · ${accMap[row.account_id] ?? "—"}` : ""}
+                  </p>
+                </div>
+                <span
+                  className={
+                    row.type === "income"
+                      ? "shrink-0 font-semibold text-green-600 dark:text-green-400"
+                      : "shrink-0 font-semibold text-red-600 dark:text-red-400"
+                  }
+                >
+                  {row.type === "expense" ? "-" : "+"}
+                  {money(Number(row.amount))}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {row.category_id ? (
+                  <Badge
+                    variant="secondary"
+                    className="text-xs"
+                    style={{
+                      borderColor: categories.find((c) => c.id === row.category_id)?.color,
+                    }}
+                  >
+                    {catMap[row.category_id] ?? "—"}
+                  </Badge>
+                ) : null}
+                <Badge variant="outline" className="text-xs">
+                  {row.status}
+                </Badge>
+                <div className="ml-auto flex gap-1">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="min-h-[44px] min-w-[44px]"
+                    aria-label="Editar"
+                    onClick={() => {
+                      setEditRow(row);
+                      setDialogOpen(true);
+                    }}
+                  >
+                    <Pencil className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="min-h-[44px] min-w-[44px] text-destructive"
+                    aria-label="Excluir"
+                    onClick={() => onDelete(row.id)}
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop: tabela */}
+      <div className="hidden rounded-md border md:block">
         <Table>
           <TableHeader>
             <TableRow>
