@@ -103,7 +103,7 @@ export function DashboardShell({
       <div className="flex flex-1 flex-col md:contents">
         <header className="flex min-h-[52px] items-center gap-2 border-b border-border bg-sidebar px-3 md:hidden">
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-            <SheetTrigger asChild>
+            <SheetTrigger>
               <Button
                 type="button"
                 variant="ghost"
