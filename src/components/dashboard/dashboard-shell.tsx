@@ -3,7 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, List, LogOut, Menu, Moon, Sun } from "lucide-react";
+import {
+  LayoutDashboard,
+  List,
+  LogOut,
+  Menu,
+  Moon,
+  Receipt,
+  Settings,
+  Sun,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +28,8 @@ import { signOut } from "@/app/(dashboard)/actions";
 const nav = [
   { href: "/", label: "Início", icon: LayoutDashboard },
   { href: "/transactions", label: "Transações", icon: List },
+  { href: "/bills", label: "Contas", icon: Receipt },
+  { href: "/settings", label: "Configurações", icon: Settings },
 ];
 
 function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
