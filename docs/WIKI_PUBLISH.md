@@ -1,9 +1,13 @@
 # Publicar a Wiki no GitHub
 
-A Wiki nativa do GitHub **não pôde ser ativada só pela API** em alguns casos — confira se está ligada:
+## Passo obrigatório (uma vez)
 
-1. Abra **[github.com/adventurelabsbrasil/dino/settings](https://github.com/adventurelabsbrasil/dino/settings)**  
-2. Em **General → Features** → marque **Wikis** → Save.
+O GitHub **só cria** o repositório da Wiki depois da **primeira página na web**:
+
+1. **Settings → Features → Wikis** (ligado)
+2. Aba **[Wiki](https://github.com/adventurelabsbrasil/dino/wiki)** → **Create the first page** → título `Home` → qualquer texto → **Save Page**
+
+Sem o passo 2, `git clone …dino.wiki.git` falha com “repository not found”.
 
 ## Publicar a partir deste repositório
 
