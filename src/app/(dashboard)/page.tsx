@@ -5,6 +5,7 @@ import {
   startOfMonth,
   subMonths,
   parseISO,
+  addDays,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
@@ -108,6 +109,17 @@ export default async function DashboardPage() {
     .order("created_at", { ascending: false })
     .limit(10);
 
+  const today = format(now, "yyyy-MM-dd");
+  const inSevenDays = format(addDays(now, 7), "yyyy-MM-dd");
+  const { data: upcomingBills } = await supabase
+    .from("bills")
+    .select("id, description, amount, due_date, type, status")
+    .eq("status", "open")
+    .gte("due_date", today)
+    .lte("due_date", inSevenDays)
+    .order("due_date", { ascending: true })
+    .limit(10);
+
   return (
     <div className="space-y-8">
       <div>
@@ -149,6 +161,54 @@ export default async function DashboardPage() {
           </CardHeader>
         </Card>
       </div>
+
+      {(upcomingBills ?? []).length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Próximas contas a vencer (7 dias)</CardTitle>
+            <CardDescription>Contas a pagar e a receber</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Vencimento</TableHead>
+                  <TableHead>Descrição</TableHead>
+                  <TableHead>Tipo</TableHead>
+                  <TableHead className="text-right">Valor</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {upcomingBills!.map((b) => (
+                  <TableRow key={b.id}>
+                    <TableCell>
+                      {format(parseISO(b.due_date as string), "dd/MM/yyyy")}
+                    </TableCell>
+                    <TableCell className="max-w-[200px] truncate">
+                      {b.description}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">
+                        {b.type === "payable" ? "A pagar" : "A receber"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell
+                      className={
+                        b.type === "payable"
+                          ? "text-right text-red-600 dark:text-red-400"
+                          : "text-right text-green-600 dark:text-green-400"
+                      }
+                    >
+                      {b.type === "payable" ? "-" : "+"}
+                      {money(Number(b.amount))}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>

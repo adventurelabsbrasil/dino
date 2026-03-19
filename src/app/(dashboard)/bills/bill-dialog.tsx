@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useFormState } from "react-dom";
 import type { Account, Bill, Category } from "@/types/database";
-import { createBill, markBillPaid, type BillsActionState } from "./actions";
-import { SubmitButton } from "@/components/submit-button";
+import { createBill, markBillPaid } from "./actions";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -22,8 +21,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-
-const initial: BillsActionState = {};
 
 const baseSelectClass =
   "min-h-[44px] text-base";
@@ -57,19 +54,25 @@ export function NewBillDialog({
     return categories.filter((c) => c.type === catType);
   }, [billType, categories]);
 
-  const [state, action] = useFormState(createBill, initial);
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    setRecurrence("none");
-  }, [open]);
-
-  useEffect(() => {
-    if (state.ok) {
-      onOpenChange(false);
-      router.refresh();
-    }
-  }, [state.ok, onOpenChange, router]);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    startTransition(async () => {
+      const result = await createBill({}, formData);
+      if (result?.ok) {
+        onOpenChange(false);
+        router.refresh();
+        form.reset();
+      } else if (result?.error) {
+        setError(result.error);
+      }
+    });
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -80,7 +83,7 @@ export function NewBillDialog({
           <DialogTitle>{billType === "payable" ? "Nova conta a pagar" : "Nova conta a receber"}</DialogTitle>
         </DialogHeader>
 
-        <form action={action} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input type="hidden" name="type" value={billType} />
 
           <div className="space-y-2">
@@ -204,13 +207,13 @@ export function NewBillDialog({
             />
           </div>
 
-          {state.error ? (
-            <p className="text-sm text-destructive">{state.error}</p>
+          {error ? (
+            <p className="text-sm text-destructive">{error}</p>
           ) : null}
 
-          <SubmitButton className="w-full" pendingLabel="Salvando…">
-            Criar
-          </SubmitButton>
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Salvando…" : "Criar"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
@@ -227,16 +230,25 @@ export function PayBillDialog({
   bill: Bill | null;
 }) {
   const router = useRouter();
-  const [state, action] = useFormState(markBillPaid, initial);
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
-  const formKey = `${bill?.id ?? "new"}-${open}`;
-
-  useEffect(() => {
-    if (state.ok) {
-      onOpenChange(false);
-      router.refresh();
-    }
-  }, [state.ok, onOpenChange, router]);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!bill) return;
+    setError(null);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    startTransition(async () => {
+      const result = await markBillPaid({}, formData);
+      if (result?.ok) {
+        onOpenChange(false);
+        router.refresh();
+      } else if (result?.error) {
+        setError(result.error);
+      }
+    });
+  };
 
   if (!bill) {
     return (
@@ -260,7 +272,7 @@ export function PayBillDialog({
           <DialogTitle>Marcar como pago</DialogTitle>
         </DialogHeader>
 
-        <form key={formKey} action={action} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input type="hidden" name="id" value={bill.id} />
 
           <div className="space-y-2">
@@ -307,13 +319,13 @@ export function PayBillDialog({
             </div>
           ) : null}
 
-          {state.error ? (
-            <p className="text-sm text-destructive">{state.error}</p>
+          {error ? (
+            <p className="text-sm text-destructive">{error}</p>
           ) : null}
 
-          <SubmitButton className="w-full" pendingLabel="Salvando…">
-            Confirmar
-          </SubmitButton>
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Salvando…" : "Confirmar"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

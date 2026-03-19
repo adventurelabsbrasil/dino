@@ -158,7 +158,7 @@ export async function markBillPaid(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Não autenticado" };
 
-  await ensureFamilyMember(supabase, user);
+  const { memberId } = await ensureFamilyMember(supabase, user);
 
   const billId = parsed.data.id;
   const paidAt = new Date(parsed.data.paid_at);
@@ -184,6 +184,22 @@ export async function markBillPaid(
     .eq("id", billId);
 
   if (updateError) return { error: updateError.message };
+
+  // Criar transação correspondente (aparece em Transações e no dashboard)
+  const txType = bill.type === "payable" ? "expense" : "income";
+  const { error: txError } = await supabase.from("transactions").insert({
+    date: format(paidAt, "yyyy-MM-dd"),
+    description: bill.description as string,
+    amount: paidAmount,
+    type: txType,
+    category_id: bill.category_id,
+    account_id: bill.account_id,
+    status: "confirmed",
+    source: "manual",
+    created_by: memberId,
+    updated_by: memberId,
+  });
+  if (txError) return { error: `Conta atualizada, mas falha ao criar transação: ${txError.message}` };
 
   if (generate_next && bill.recurrence !== "none") {
     const nextDueDate = computeNextDueDate({
@@ -211,6 +227,8 @@ export async function markBillPaid(
   }
 
   revalidatePath("/bills");
+  revalidatePath("/");
+  revalidatePath("/transactions");
   return { ok: true };
 }
 
