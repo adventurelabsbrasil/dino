@@ -121,18 +121,40 @@ export function TransactionsClient({
         className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 md:flex-row md:flex-wrap md:items-end"
       >
         <div className="space-y-1">
-          <label className="text-xs text-muted-foreground">De</label>
-          <Input name="from" type="date" defaultValue={from} />
+          <label className="text-xs text-muted-foreground" htmlFor="tx-filter-from">
+            De
+          </label>
+          <Input
+            id="tx-filter-from"
+            name="from"
+            type="date"
+            defaultValue={from}
+            className="min-h-[44px]"
+          />
         </div>
         <div className="space-y-1">
-          <label className="text-xs text-muted-foreground">Até</label>
-          <Input name="to" type="date" defaultValue={to} />
+          <label className="text-xs text-muted-foreground" htmlFor="tx-filter-to">
+            Até
+          </label>
+          <Input
+            id="tx-filter-to"
+            name="to"
+            type="date"
+            defaultValue={to}
+            className="min-h-[44px]"
+          />
         </div>
         <div className="min-w-[140px] space-y-1">
-          <label className="text-xs text-muted-foreground">Categoria</label>
+          <label
+            className="text-xs text-muted-foreground"
+            htmlFor="tx-filter-category"
+          >
+            Categoria
+          </label>
           <select
+            id="tx-filter-category"
             name="category_id"
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm"
+            className="flex min-h-[44px] w-full rounded-md border border-input bg-transparent px-2 py-2 text-base"
             defaultValue={categoryId}
           >
             <option value="">Todas</option>
@@ -144,10 +166,16 @@ export function TransactionsClient({
           </select>
         </div>
         <div className="min-w-[140px] space-y-1">
-          <label className="text-xs text-muted-foreground">Conta</label>
+          <label
+            className="text-xs text-muted-foreground"
+            htmlFor="tx-filter-account"
+          >
+            Conta
+          </label>
           <select
+            id="tx-filter-account"
             name="account_id"
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm"
+            className="flex min-h-[44px] w-full rounded-md border border-input bg-transparent px-2 py-2 text-base"
             defaultValue={accountId}
           >
             <option value="">Todas</option>
@@ -159,10 +187,13 @@ export function TransactionsClient({
           </select>
         </div>
         <div className="min-w-[120px] space-y-1">
-          <label className="text-xs text-muted-foreground">Tipo</label>
+          <label className="text-xs text-muted-foreground" htmlFor="tx-filter-type">
+            Tipo
+          </label>
           <select
+            id="tx-filter-type"
             name="type"
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm"
+            className="flex min-h-[44px] w-full rounded-md border border-input bg-transparent px-2 py-2 text-base"
             defaultValue={type}
           >
             <option value="">Todos</option>
@@ -171,8 +202,16 @@ export function TransactionsClient({
           </select>
         </div>
         <div className="min-w-[200px] flex-1 space-y-1">
-          <label className="text-xs text-muted-foreground">Busca</label>
-          <Input name="q" placeholder="Descrição…" defaultValue={q} />
+          <label className="text-xs text-muted-foreground" htmlFor="tx-filter-q">
+            Busca
+          </label>
+          <Input
+            id="tx-filter-q"
+            name="q"
+            placeholder="Descrição…"
+            defaultValue={q}
+            className="min-h-[44px]"
+          />
         </div>
         <Button type="submit" variant="secondary">
           Filtrar

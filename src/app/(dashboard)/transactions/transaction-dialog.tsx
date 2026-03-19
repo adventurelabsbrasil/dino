@@ -41,7 +41,7 @@ type TxRow = {
 };
 
 const selectClass =
-  "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
+  "flex min-h-[44px] w-full items-center rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
 
 export function TransactionDialog({
   categories,
@@ -84,7 +84,9 @@ export function TransactionDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
+      <DialogContent
+        className="max-h-[90vh] overflow-y-auto sm:max-w-md pb-[env(safe-area-inset-bottom)]"
+      >
         <DialogHeader>
           <DialogTitle>
             {editRow ? "Editar transação" : "Nova transação"}
@@ -98,6 +100,7 @@ export function TransactionDialog({
               id="tx-date"
               name="date"
               type="date"
+              className="min-h-[44px]"
               required
               defaultValue={
                 editRow?.date?.slice(0, 10) ??
@@ -111,6 +114,7 @@ export function TransactionDialog({
               id="tx-desc"
               name="description"
               required
+              className="min-h-[44px]"
               defaultValue={editRow?.description ?? ""}
             />
           </div>
@@ -120,6 +124,7 @@ export function TransactionDialog({
               id="tx-amount"
               name="amount"
               type="number"
+              className="min-h-[44px]"
               step="0.01"
               min="0.01"
               required
@@ -133,7 +138,10 @@ export function TransactionDialog({
               value={type}
               onValueChange={(v) => setType(v as "income" | "expense")}
             >
-              <SelectTrigger>
+              <SelectTrigger
+                aria-label="Tipo"
+                className="min-h-[44px] text-base"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
