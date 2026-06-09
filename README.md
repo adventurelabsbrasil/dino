@@ -1,5 +1,9 @@
 # Dino — MVP (finanças da família)
 
+> ⚠️ **LEGADO / ARQUIVADO (2026-06-08) — não é o Dino canônico.**
+> Este app standalone (Next.js, schema `family_members`/`transactions`) é o **conceito original** do Dino. Pelo **[ADR-017](https://github.com/adventurelabsbrasil/ssot/blob/main/ADR/017-dino-pf-projeto-proprio-um-cerebro-dois-cofres.md) ("um cérebro, dois cofres")**, o **Dino vivo = o cofre financeiro PF** no projeto Supabase `tugeygoarzvzfkiwoclp` (schema `adv_fin_*`, tenant `5e3084db`/`dino-pf-rodrigo`), operado pelo **mesmo runtime-agente da Sueli Interna mode-aware** — **não** por este app.
+> Canon do agente: [`ssot/agents/dino/`](https://github.com/adventurelabsbrasil/ssot/tree/main/agents/dino). Repo mantido só como referência histórica; **sem novas features**.
+
 App **standalone** em Next.js 14 + Supabase: login, painel com resumo do mês, gráficos (Recharts) e CRUD de transações.
 
 **Monorepo Adventure Labs:** este repositório é referenciado como **git submodule** em `tools/dino` (clone com `git submodule update --init tools/dino`). Ver também `knowledge/06_CONHECIMENTO/dino-repo-e-submodulo.md` no repo adventure-labs.
